@@ -1,16 +1,32 @@
 {
-    "name" : "rampage-php/rbac",
-    "require" : {
-        "php" : ">=5.5"
-    },
-    "extra" : {
-        "branch-alias" : {
-            "dev-master" : "1.0.x-dev"
-        }
-    },
-    "autoload" : {
-        "psr-4" : {
-            "rampage\\rbac\\" : "src/"
-        }
+  "name" : "rampage-php/rbac",
+  "description" : "A leightweight Rbac implementation",
+  "require" : {
+    "php" : ">=5.5"
+  },
+  "require-dev" : {
+    "phpunit/phpunit" : "3.7.*"
+  },
+  "authors" : [ {
+    "name" : "Axel Helmert",
+    "email" : "staff@pro-unreal.de",
+    "role" : "Lead-Developer"
+  } ],
+  "keywords" : [ "rbac" ],
+  "support" : {
+    "issues" : "https://github.com/tux-rampage/rampage-rbac/issues",
+    "source" : "https://github.com/tux-rampage/rampage-rbac"
+  },
+  "extra" : {
+    "branch-alias" : {
+      "dev-master" : "1.0.x-dev"
     }
+  },
+  "autoload" : {
+    "psr-4" : {
+      "rampage\\rbac\\" : "src/"
+    }
+  },
+  "license" : "GPL-3.0+",
+  "type" : "library"
 }

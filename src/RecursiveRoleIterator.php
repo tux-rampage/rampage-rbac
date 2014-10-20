@@ -23,6 +23,9 @@
 namespace rampage\rbac;
 
 use RecursiveIterator;
+use IteratorIterator;
+use ArrayIterator;
+
 
 class RecursiveRoleIterator implements RecursiveIterator
 {
@@ -52,7 +55,7 @@ class RecursiveRoleIterator implements RecursiveIterator
         $this->stack[$role->getRoleId()] = $role->getRoleId();
 
         $iterator = $role->getChildren();
-        $this->iterator = is_array($iterator)? new \ArrayIterator($iterator) : new \IteratorIterator($iterator);
+        $this->iterator = is_array($iterator)? new ArrayIterator($iterator) : new IteratorIterator($iterator);
     }
 
     /**
@@ -103,13 +106,30 @@ class RecursiveRoleIterator implements RecursiveIterator
     }
 
     /**
+     * @return boolean
+     */
+    protected function accept()
+    {
+        if (!$this->role->getContainer()->hasRole($this->iterator->current())) {
+            return false;
+        }
+
+        if (in_array($this->iterator->current(), $this->stack)) {
+            // recursion
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function next()
     {
         $this->iterator->next();
 
-        while ($this->iterator->valid() && !$this->role->getContainer()->hasRole($this->iterator->current())) {
+        while ($this->iterator->valid() && !$this->accept()) {
             $this->iterator->next();
         }
     }

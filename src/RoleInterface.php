@@ -28,31 +28,49 @@ namespace rampage\rbac;
 interface RoleInterface
 {
     /**
+     * Returns the role ID
+     *
      * @return string
      */
     public function getRoleId();
 
     /**
+     * Assign the role container
+     *
+     * The role container may contain all available roles.
+     * Usually this is the Rbac instance
+     *
      * @param RoleContainerInterface $container
      */
     public function setContainer(RoleContainerInterface $container);
 
     /**
+     * Returns the assigned role container
+     *
      * @return RoleContainerInterface
      */
     public function getContainer();
 
     /**
+     * Checks for valid children.
+     *
+     * This method should perform a check if
+     * a role is actually present in the assigned role container
+     *
      * @return bool
      */
     public function hasChildren();
 
     /**
-     * @return RoleInterface[]
+     * Returns the child role names as string
+     *
+     * @return string[]
      */
     public function getChildren();
 
     /**
+     * Check if the given permission is granted.
+     *
      * @param string $permission
      * @param bool
      */

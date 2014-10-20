@@ -22,8 +22,11 @@
 
 namespace rampage\rbac;
 
+use IteratorAggregate;
+use RecursiveIteratorIterator;
 
-class Role implements RoleInterface
+
+class Role implements RoleInterface, IteratorAggregate
 {
     /**
      * @var string
@@ -59,6 +62,14 @@ class Role implements RoleInterface
     /**
      * {@inheritdoc}
      */
+    public function getIterator()
+    {
+        return new RecursiveRoleIterator($this);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getRoleId()
     {
         return $this->id;
@@ -83,7 +94,7 @@ class Role implements RoleInterface
      */
     public function hasChildren()
     {
-        if (empty($this->children)) {
+        if (empty($this->children) || !$this->container) {
             return false;
         }
 
@@ -114,17 +125,7 @@ class Role implements RoleInterface
             return (bool)$this->permissions[$permission];
         }
 
-        foreach ($this->children as $child) {
-            if (!$this->container->hasRole($child)) {
-                continue;
-            }
-
-            if ($this->container->getRole($child)->isGranted($permission)) {
-                return true;
-            }
-        }
-
-        return false;
+        return null;
     }
 
     /**

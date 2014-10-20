@@ -20,25 +20,4 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.txt GNU General Public License
  */
 
-namespace rampage\rbac;
-
-
-/**
- * ZF2 does not provide an interface for Rbac and it's shitty implemented
- */
-interface RoleContainerInterface
-{
-    /**
-     * Check if a role exists
-     *
-     * @param RoleInterface|string $role
-     * @return bool
-     */
-    public function hasRole($role);
-
-    /**
-     * @param string $role
-     * @return RoleInterface
-     */
-    public function getRole($role);
-}
+require_once __DIR__ . '/../vendor/autoload.php';

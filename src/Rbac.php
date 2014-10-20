@@ -24,9 +24,10 @@ namespace rampage\rbac;
 
 use ArrayIterator;
 use IteratorAggregate;
+use RecursiveIteratorIterator;
 
 
-class Rbac implements RbacInterface, IteratorAggregate
+class Rbac implements IteratorAggregate, RbacInterface
 {
     /**
      * @var RoleInterface[]
@@ -44,6 +45,7 @@ class Rbac implements RbacInterface, IteratorAggregate
     /**
      * @param RoleInterface|string $role
      * @param string $children
+     * @return self
      */
     public function addRole($role, $children = null)
     {
@@ -71,6 +73,8 @@ class Rbac implements RbacInterface, IteratorAggregate
         }
 
         $this->roles[$role->getRoleId()] = $role;
+
+        return $this;
     }
 
     /**
@@ -82,7 +86,24 @@ class Rbac implements RbacInterface, IteratorAggregate
             return false;
         }
 
-        return $this->getRole($role)->isGranted($permission);
+        $role = $this->getRole($role);
+        $result = $role->isGranted($permission);
+
+        if ($result !== null) {
+            return (bool)$result;
+        }
+
+        $iterator = new RecursiveIteratorIterator(new RecursiveRoleIterator($role), RecursiveIteratorIterator::SELF_FIRST);
+
+        foreach ($iterator as $child) {
+            $result = $child->isGranted($permission);
+
+            if ($result !== null) {
+                return (bool)$result;
+            }
+        }
+
+        return false;
     }
 
     /**
