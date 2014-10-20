@@ -85,6 +85,13 @@ class Role implements RoleInterface, IteratorAggregate
             $child = $child->getRoleId();
         }
 
+        if (!is_string($child)) {
+            throw new exceptions\UnexpectedValueException(sprintf(
+                'The role id must be a string, %s given.',
+                is_object($child)? get_class($child) : gettype($child)
+            ));
+        }
+
         $this->children[$child] = $child;
         return $this;
     }

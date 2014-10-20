@@ -115,7 +115,12 @@ class Rbac implements IteratorAggregate, RbacInterface
             $role = $role->getRoleId();
         }
 
-        $role = (string)$role;
+        if (!is_string($role)) {
+            throw new exceptions\UnexpectedValueException(sprintf(
+                'The role id must be a string, %s given.',
+                is_object($role)? get_class($role) : gettype($role)
+            ));
+        }
 
         if (!$this->hasRole($role)) {
             throw new exceptions\RoleNotFoundException(sprintf('Could not find role "%s"', $role));
@@ -133,7 +138,12 @@ class Rbac implements IteratorAggregate, RbacInterface
             $role = $role->getRoleId();
         }
 
-        $role = (string)$role;
+        if (!is_string($role)) {
+            throw new exceptions\UnexpectedValueException(sprintf(
+            'The role id must be a string, %s given.',
+            is_object($role)? get_class($role) : gettype($role)
+            ));
+        }
 
         return isset($this->roles[$role]);
     }
