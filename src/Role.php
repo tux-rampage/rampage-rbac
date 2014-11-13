@@ -97,6 +97,30 @@ class Role implements RoleInterface, IteratorAggregate
     }
 
     /**
+     * @return \rampage\rbac\Role
+     * @return self
+     */
+    public function removeChildren()
+    {
+        $this->children = [];
+        return $this;
+    }
+
+    /**
+     * @param string|RoleInterface $role
+     * @return self
+     */
+    public function removeChild($role)
+    {
+        if ($role instanceof RoleInterface) {
+            $role = $role->getRoleId();
+        }
+
+        unset($this->children[$role]);
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function hasChildren()
